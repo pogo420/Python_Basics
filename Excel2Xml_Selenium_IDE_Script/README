@@ -1,1 +1,3 @@
-Use the script
+Python script taked the Book1 excel workbook and convert it to Xml document.
+It is specific to selenium IDE usage
+Check the code for more details
