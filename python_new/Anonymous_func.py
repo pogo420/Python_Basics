@@ -52,7 +52,6 @@ list2=["Sam","House","90"]
 
 y=reduce(lambda x,y:x+y,list2)
 
-
 print y
 
 
