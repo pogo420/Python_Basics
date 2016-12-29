@@ -61,6 +61,8 @@ p-->4
 j-->2
 __doc__-->obj document
 >>>
+
+
 ------------------------------------------------------------
 Importing case through another file:
 import oops02
