@@ -8,4 +8,7 @@
 * A class should have single responsibility not multiple.
 * Avoid anti-pattern: God object: A single class having multiple responsibility.
 
+## Open Close Principle(OCP)
+* Open for extension not modification.
+
   
