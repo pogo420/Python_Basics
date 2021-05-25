@@ -22,3 +22,14 @@
 # Dependency inversion principle(DIP)
 * High level class should not depend on low level class. There must be an abstraction in between.
 * Details must be dependent on abstraction. Not vice versa.
+
+# Pattern type:
+## Creational Pattern
+* Deals with object creation.
+
+## Structural Pattern
+* Object structure/ class members.
+
+## Behavioural Pattern
+* Problem specific.
+
