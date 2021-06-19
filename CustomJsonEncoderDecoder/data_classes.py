@@ -1,3 +1,10 @@
+from enum import Enum, auto
+
+
+class ObjectType(Enum):
+    Person = "Person"
+
+
 class Address:
     def __init__(self, pin_code: int, city: str):
         self.city = city
@@ -31,4 +38,3 @@ if __name__ == '__main__':
     company_ = Company("Zebra", "5")
     person_ = Person("arnab", address_, company_)
     print(person_)
-
