@@ -71,6 +71,7 @@ async def cleanup(message: Message):
 
 
 async def shutdown(signal: int, loop: AbstractEventLoop):
+    """Function for graceful shutdown"""
     print(f"Shutting down.., received signal:{signal}")
     # collecting tasks
     tasks = [task for task in asyncio.all_tasks() if task != asyncio.current_task()]
@@ -93,7 +94,7 @@ def main():
         loop.add_signal_handler(s,
                                 lambda s=s: asyncio.create_task(shutdown(s, loop)))
 
-    # loop.set_exception_handler(exception_handler)
+    loop.set_exception_handler(exception_handler)
     queue: Queue[Message] = asyncio.Queue()
 
     try:
