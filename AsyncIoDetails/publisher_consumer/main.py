@@ -47,8 +47,10 @@ async def producer(queue):
 
 
 async def handle_message(message: Message):
-    await save(message)
-    await cleanup(message)
+    save_, clean_ = await asyncio.gather(save(message), cleanup(message))
+    # raise Exception("Generic Test")
+    if isinstance(clean_, Exception):
+        pass  # add logic of exception
 
 
 async def consumer(queue):
@@ -79,7 +81,8 @@ async def shutdown(signal: int, loop: AbstractEventLoop):
     [task.cancel() for task in tasks]
     print(f"cancelling {len(tasks)} pending tasks..")
     # waiting for cancel activity to close.
-    await asyncio.gather(*tasks, return_exceptions=True)
+    await asyncio.gather(*tasks, return_exceptions=True)  # if return_exception is not set it will be handled by
+    # global exception handler
     loop.stop()
 
 
@@ -94,7 +97,7 @@ def main():
         loop.add_signal_handler(s,
                                 lambda s=s: asyncio.create_task(shutdown(s, loop)))
 
-    loop.set_exception_handler(exception_handler)
+    loop.set_exception_handler(exception_handler)  # global exception handler
     queue: Queue[Message] = asyncio.Queue()
 
     try:
