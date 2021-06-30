@@ -1,6 +1,6 @@
-import asyncio
+
 from asyncio import Task
-from typing import List
+from typing import List, Awaitable
 import time
 import requests
 from aiohttp import ClientSession
@@ -36,6 +36,21 @@ def task_handler(url: str) -> str:
     return response.text
 
 
+async def converting_blocker_to_non_blocker(base_url: str, tasks_: List[str]) -> List[str]:
+    """Function to convert blocking to non blocking"""
+    results_: List[str]
+    async_tasks: List[Awaitable] = []
+    loop = asyncio.get_event_loop()
+
+    for task in tasks_:
+        url: str = base_url.replace("{{user}}", task)
+        async_tasks.append(
+                loop.run_in_executor(None, task_handler, url)  # executing blocking calls in loop
+        )
+    results_ = await asyncio.gather(*async_tasks)
+    return results_
+
+
 def sync_request(base_url: str, tasks_: List[str]) -> List[str]:
     """Function to implement synchronous request"""
     results_: List[str] = []
@@ -67,7 +82,7 @@ def multi_process(base_url: str, tasks_: List[str]) -> List[str]:
 
 if __name__ == '__main__':
     base_url_: str = "http://127.0.0.1:5000/?user={{user}}"
-    tasks: List[str] = ["arnab", "arnablovespython", "ola", "user"]
+    tasks: List[str] = ["arnab", "arnablovespython", "ola", "user", "async", "sync", "concurrent", "23iioi32"]
 
     t_init = time.time()
     results = sync_request(base_url_, tasks)
@@ -85,3 +100,7 @@ if __name__ == '__main__':
     results = asyncio.run(async_process(base_url_, tasks))
     print(f"Results: {results}, it took {time.time() - t_init} seconds via AsyncIO+aiohttp process approach")
 
+    t_init = time.time()
+    results = asyncio.run(converting_blocker_to_non_blocker(base_url_, tasks))
+    print(f"Results: {results}, it took {time.time() - t_init} seconds via run in loop executor process approach "
+          f"converting blocking to non blocking")
