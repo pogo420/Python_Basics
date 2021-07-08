@@ -1,16 +1,36 @@
-# This is a sample Python script.
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+# exception
+try:
+    print("unreachable")
+except:
+    print("Runs when there is issue")
+else:
+    print("Runs when there is no issue")
+finally:
+    print("Runs always")
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+class TestContext:
+
+    def __init__(self):
+        self.data=[]
+
+    def __enter__(self):
+        # must return the object, it will be assigned to with variable
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.data.clear()
+        del self.data
+
+    def inc_int(self, val: int):
+        self.data.append(val)
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    with TestContext() as a:
+        a.inc_int(1)
+        a.inc_int(4)
+        print(a.data)
+
