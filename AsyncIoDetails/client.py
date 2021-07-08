@@ -7,6 +7,7 @@ from aiohttp import ClientSession
 from requests import Response
 import concurrent.futures
 import asyncio
+import uvloop
 
 
 async def async_task_handler(session: ClientSession, url: str) -> str:
@@ -104,3 +105,11 @@ if __name__ == '__main__':
     results = asyncio.run(converting_blocker_to_non_blocker(base_url_, tasks))
     print(f"Results: {results}, it took {time.time() - t_init} seconds via run in loop executor process approach "
           f"converting blocking to non blocking")
+
+    t_init = time.time()
+    # uvloop.install()
+    loop = uvloop.new_event_loop()
+    asyncio.set_event_loop(loop)
+    results = asyncio.run(async_process(base_url_, tasks))
+
+    print(f"Results: {results}, it took {time.time() - t_init} seconds via AsyncIO+aiohttp+uvloop process approach")
